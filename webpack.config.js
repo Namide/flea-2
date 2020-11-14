@@ -72,19 +72,18 @@ module.exports = {
           'css-loader'
         ],
       },
-      // {
-      //   test: /\.ejs$/,
-      //   use: [
-      //     // { loader: 'html-loader' },
-      //     {
-      //       loader: 'ejs-loader',
-      //       options: {
-      //         esModule: false
-      //       }
-      //     },
-      //   ],
-        
-      // }
+      {
+        test: /\.ejs$/,
+        use: [
+          { loader: 'html-loader' },
+          {
+            loader: 'ejs-loader',
+            options: {
+              esModule: false
+            }
+          },
+        ],
+      }
     ]
   },
 
