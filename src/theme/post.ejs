@@ -1,0 +1,11 @@
+<!doctype html>
+<html>
+  <head>
+    <title><%= htmlWebpackPlugin.options.data.test %></title>
+    <link href="<%= require('./style/post.css').default %>" rel="stylesheet" type="text/css">
+  </head>
+  <body>
+    <img src="<%= require('../content/touhou.jpg').default %>" alt="">
+    <%= require("html-loader!markdown-loader!metaless-loader!../content/" + htmlWebpackPlugin.options.filesrc) %>
+  </body>
+</html>

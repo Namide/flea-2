@@ -1,0 +1,10 @@
+---
+languages:
+  - fr
+  - en
+mainLanguage: en
+default:
+  language: en
+  template: post
+  robots: true
+...
