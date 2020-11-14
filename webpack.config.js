@@ -4,7 +4,7 @@ const glob = require('glob')
 const webpack = require("webpack")
 const frontMatter = require('front-matter')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
-const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+// const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 
 // Helper
@@ -46,7 +46,7 @@ module.exports = {
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
-    filename: "assets/js/[name]",
+    filename: "assets/script/[name]",
     publicPath: '/'
   },
   module: {
@@ -69,13 +69,35 @@ module.exports = {
           //     esModule: false
           //   },
           // },
+          {
+            loader: "file-loader",
+            options: {
+                name: "assets/style/[name].[ext]",
+            },
+          },
+          "extract-loader",
           'css-loader'
         ],
       },
       {
         test: /\.ejs$/,
         use: [
-          { loader: 'html-loader' },
+          // {
+          //   loader: "file-loader",
+          //   options: {
+          //       name: "assets/[name].[ext]",
+          //   },
+          // },
+          // "extract-loader",
+          // { loader: 'html-loader' },
+
+          // {
+          //   loader: MiniCssExtractPlugin.loader,
+          //   options: {
+          //     esModule: false
+          //   },
+          // },
+          // 'html-loader',
           {
             loader: 'ejs-loader',
             options: {
@@ -88,11 +110,11 @@ module.exports = {
   },
 
   plugins: [
-    new MiniCssExtractPlugin({
-      filename: '[name].css',
-      chunkFilename: '[id].css',
-    }),
-    new webpack.HotModuleReplacementPlugin(),
+    // new MiniCssExtractPlugin({
+    //   filename: '[name].css',
+    //   chunkFilename: '[id].css',
+    // }),
+    // new webpack.HotModuleReplacementPlugin(),
     ...htmlWebpackPlugins,
     new CleanWebpackPlugin()
   ]
