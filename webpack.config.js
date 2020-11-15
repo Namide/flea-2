@@ -1,7 +1,6 @@
 const path = require('path')
 const fs = require('fs')
 const glob = require('glob')
-const webpack = require("webpack")
 const frontMatter = require('front-matter')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
@@ -36,6 +35,7 @@ const htmlWebpackPlugins = pageFiles
 
 // Webpack
 module.exports = {
+  mode: 'production',
   devServer: {
     contentBase: path.join(__dirname, 'dist'),
     port: 8080,

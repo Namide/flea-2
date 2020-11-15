@@ -5,6 +5,6 @@ template: post
 language: fr
 ---
 
-## Title level 2
+## Title 1
 
 ![](./touhou.jpg)
