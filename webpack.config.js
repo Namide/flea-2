@@ -6,6 +6,8 @@ const frontMatter = require('front-matter')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 // const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
+// const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
+// const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 
 // Helper
 const getYaml = src => frontMatter(fs.readFileSync(src, { encoding: 'utf-8' })).attributes
@@ -24,7 +26,7 @@ const htmlWebpackPlugins = pageFiles.map(fileName => {
     template: 'src/theme/' + meta.template + '.ejs',
     filesrc: fileName.replace('src/content/', ''),
     data: meta,
-    inject: false,
+    inject: 'body',
   }
 
   PAGES.push(options)
@@ -79,6 +81,19 @@ module.exports = {
           'css-loader'
         ],
       },
+      // {
+      //   test: /post\.js$/i,
+      //   use: [
+      //     {
+      //       loader: "file-loader",
+      //       options: {
+      //           name: "assets/script/[name].[ext]",
+      //       },
+      //     },
+      //     "extract-loader",
+      //     "terser-loader"
+      //   ],
+      // },
       {
         test: /\.ejs$/,
         use: [
@@ -109,6 +124,10 @@ module.exports = {
     ]
   },
 
+  // optimization: {
+  //   minimizer: [new UglifyJsPlugin()],
+  // },
+
   plugins: [
     // new MiniCssExtractPlugin({
     //   filename: '[name].css',
@@ -116,6 +135,22 @@ module.exports = {
     // }),
     // new webpack.HotModuleReplacementPlugin(),
     ...htmlWebpackPlugins,
-    new CleanWebpackPlugin()
+    new CleanWebpackPlugin(),
+
+    // new UglifyJsPlugin({
+    //   // test: /\.js($|\?)/i,
+    //   // sourceMap: true,
+    //   // uglifyOptions: {
+    //   //   mangle: {
+    //   //     keep_fnames: true,
+    //   //   },
+    //   //   compress: {
+    //   //     warnings: false,
+    //   //   },
+    //   //   output: {
+    //   //     beautify: false,
+    //   //   },
+    //   // },
+    // }),
   ]
 }
