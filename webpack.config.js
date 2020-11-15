@@ -5,6 +5,7 @@ const webpack = require("webpack")
 const frontMatter = require('front-matter')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
+const CopyPlugin = require("copy-webpack-plugin")
 
 // Helper
 const getYaml = src => frontMatter(fs.readFileSync(src, { encoding: 'utf-8' })).attributes
@@ -15,21 +16,23 @@ const PAGES = []
 
 // Pages data
 const pageFiles = glob.sync('src/content/**/*.md')
-const htmlWebpackPlugins = pageFiles.map(fileName => {
-  const permalink = fileName.replace('src/content/', '/').replace('.md', '')
-  const meta = Object.assign({ permalink }, CONFIG.default, getYaml(fileName))
-  const options = {
-    filename: meta.permalink + '/index.html',
-    template: 'src/theme/' + meta.template + '.ejs',
-    filesrc: fileName.replace('src/content/', ''),
-    data: meta,
-    inject: false,
-  }
+  .filter(fileName => !/^src\/content\/static\//si.test(fileName))
+const htmlWebpackPlugins = pageFiles
+  .map(fileName => {
+    const permalink = fileName.replace('src/content/', '/').replace('.md', '')
+    const meta = Object.assign({ permalink }, CONFIG.default, getYaml(fileName))
+    const options = {
+      filename: meta.permalink + '/index.html',
+      template: 'src/theme/' + meta.template + '.ejs',
+      filesrc: fileName.replace('src/content/', ''),
+      data: meta,
+      inject: false,
+    }
 
-  PAGES.push(options)
-  
-  return new HtmlWebpackPlugin(options)
-})
+    PAGES.push(options)
+    
+    return new HtmlWebpackPlugin(options)
+  })
 
 // Webpack
 module.exports = {
@@ -88,5 +91,10 @@ module.exports = {
   plugins: [
     ...htmlWebpackPlugins,
     new CleanWebpackPlugin(),
+    new CopyPlugin({
+      patterns: [
+        { from: "src/content/static", to: "" }
+      ],
+    }),
   ]
 }
