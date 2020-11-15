@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "webpack --progress --stats",
-    "serve": "webpack serve --watch --hot",
+    "build": "webpack --stats --env production",
+    "serve": "webpack serve --env development",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
