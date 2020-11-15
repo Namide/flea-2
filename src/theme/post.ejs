@@ -7,7 +7,7 @@
   <body>
     <img src="<%= require('../content/touhou.jpg').default %>" alt="">
     
-    <%= require("html-loader!markdown-loader!metaless-loader!../content/" + htmlWebpackPlugin.options.filesrc) %>
+    <%= require('./_pages.js')[htmlWebpackPlugin.options.filesrc] %>
 
     <script type="text/javascript" src="/assets/script/main.js"></script>
   </body>

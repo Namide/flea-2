@@ -16,22 +16,28 @@ const PAGES = []
 // Pages data
 const pageFiles = glob.sync('src/content/**/*.md')
   .filter(fileName => !/^src\/content\/static\//si.test(fileName))
+let pagesRequire = ''
 const htmlWebpackPlugins = pageFiles
   .map(fileName => {
     const permalink = fileName.replace('src/content/', '/').replace('.md', '')
     const meta = Object.assign({ permalink }, CONFIG.default, getYaml(fileName))
+    const filesrc = fileName.replace('src/content/', '')
     const options = {
+      filesrc,
       filename: meta.permalink + '/index.html',
       template: 'src/theme/' + meta.template + '.ejs',
-      filesrc: fileName.replace('src/content/', ''),
       data: meta,
       inject: false,
     }
+
+    pagesRequire += `list['${filesrc}'] = require('html-loader!markdown-loader!metaless-loader!../content/${filesrc}')\n` 
 
     PAGES.push(options)
     
     return new HtmlWebpackPlugin(options)
   })
+
+fs.writeFileSync('src/theme/_pages.js', 'const list = {}\n' + pagesRequire + 'module.exports = list')
 
 // Webpack
 module.exports = {
