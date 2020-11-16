@@ -28,8 +28,9 @@ const htmlWebpackPlugins = pageFiles
 
     meta.pages = PAGES
     meta.filesrc = fileName.replace('content/', '')
+    const filename = meta.permalink !== '/' ? meta.permalink.substring(1) + '/index.html' : 'index.html'
     const options = {
-      filename: meta.permalink.substring(1) + '/index.html',
+      filename,
       template: 'theme/' + meta.template + '.ejs',
       data: meta,
       inject: false
@@ -45,7 +46,7 @@ const htmlWebpackPlugins = pageFiles
     delete page.pages
     PAGES.push(page)
     console.log('Page: ' + meta.permalink)
-    
+
     return new HtmlWebpackPlugin(options)
   })
   
