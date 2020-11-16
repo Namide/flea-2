@@ -27,10 +27,9 @@ const htmlWebpackPlugins = pageFiles
     const meta = Object.assign({ permalink }, CONFIG.default, getYaml(fileName))
 
     meta.pages = PAGES
-    meta.url = '/' + meta.permalink
     meta.filesrc = fileName.replace('content/', '')
     const options = {
-      filename: meta.permalink + '/index.html',
+      filename: meta.permalink.substring(1) + '/index.html',
       template: 'theme/' + meta.template + '.ejs',
       data: meta,
       inject: false
@@ -45,19 +44,11 @@ const htmlWebpackPlugins = pageFiles
     const page = JSON.parse(JSON.stringify(meta))
     delete page.pages
     PAGES.push(page)
-    console.log('Page: /' + meta.permalink)
+    console.log('Page: ' + meta.permalink)
     
     return new HtmlWebpackPlugin(options)
   })
   
-fs.writeFileSync(
-  'theme/_pages.js',
-  `const list = {}
-
-${ requireList.join('\n') }
-
-module.exports = list`
-)
 
 console.log('Page count:', pageFiles.length, '\n')
 
