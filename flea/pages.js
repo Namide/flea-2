@@ -7,31 +7,31 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const getYaml = src => frontMatter(fs.readFileSync(src, { encoding: 'utf-8' })).attributes
 
 // Constants
-const CONFIG = getYaml('src/config.yml')
+const CONFIG = getYaml('config.yml')
 const PAGES = []
 const requireList = []
 
 // Pages data
 const pageFiles = [
-    ...glob.sync('src/content/**/*.md'),
-    ...glob.sync('src/content/**/*.html')
+    ...glob.sync('content/**/*.md'),
+    ...glob.sync('content/**/*.html')
   ]
-  .filter(fileName => !/^src\/content\/static\//si.test(fileName))
+  .filter(fileName => !/^content\/static\//si.test(fileName))
 
 const htmlWebpackPlugins = pageFiles
   .map(fileName => {
     const ext = fileName.split('.').pop()
     const permalink = fileName
-      .replace('src/content/', '/')
+      .replace('content/', '/')
       .replace('.' + ext, '')
     const meta = Object.assign({ permalink }, CONFIG.default, getYaml(fileName))
 
     meta.pages = PAGES
     meta.url = '/' + meta.permalink
-    meta.filesrc = fileName.replace('src/content/', '')
+    meta.filesrc = fileName.replace('content/', '')
     const options = {
       filename: meta.permalink + '/index.html',
-      template: 'src/theme/' + meta.template + '.ejs',
+      template: 'theme/' + meta.template + '.ejs',
       data: meta,
       inject: false
     }
@@ -51,7 +51,7 @@ const htmlWebpackPlugins = pageFiles
   })
   
 fs.writeFileSync(
-  'src/theme/_pages.js',
+  'theme/_pages.js',
   `const list = {}
 
 ${ requireList.join('\n') }

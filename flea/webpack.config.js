@@ -25,7 +25,7 @@ module.exports = env => {
     },
 
     entry: {
-      "main.js": "./src/theme/script/main.js",
+      "main.js": "./theme/script/main.js",
     },
 
     output: {
@@ -41,7 +41,7 @@ module.exports = env => {
           loader: 'file-loader',
           options: {
             name: 'assets/[path][name].[ext]',
-            context: 'src'
+            // context: 'src'
           },
         },
         {
@@ -63,7 +63,7 @@ module.exports = env => {
             {
               loader: "file-loader",
               options: {
-                  name: "assets/style/[name].[ext]",
+                name: "assets/style/[name].css",
               },
             },
             "extract-loader",
@@ -90,7 +90,7 @@ module.exports = env => {
       new CleanWebpackPlugin(),
       new CopyPlugin({
         patterns: [
-          { from: "src/content/static", to: "" }
+          { from: "content/static", to: "" }
         ],
       }),
     ]
