@@ -37,9 +37,9 @@ const htmlWebpackPlugins = pageFiles
     }
 
     if (ext === 'md') {
-      requireList.push(`list['${meta.filesrc}'] = require('html-loader!markdown-loader!metaless-loader!../content/${meta.filesrc}')`)
+      requireList.push(`list['${meta.filesrc}'] = require('html-loader!markdown-loader!metaless-loader!./content/${meta.filesrc}')`)
     } else if (ext === 'html') {
-      requireList.push(`list['${meta.filesrc}'] = require('html-loader!metaless-loader!../content/${meta.filesrc}')`)
+      requireList.push(`list['${meta.filesrc}'] = require('html-loader!metaless-loader!./content/${meta.filesrc}')`)
     }
 
     const page = JSON.parse(JSON.stringify(meta))
@@ -49,9 +49,13 @@ const htmlWebpackPlugins = pageFiles
 
     return new HtmlWebpackPlugin(options)
   })
-  
 
 console.log('Page count:', pageFiles.length, '\n')
+
+fs.writeFileSync(
+  './.flea-cache.pages.js',
+  `const list = {}\n${ requireList.join('\n') }\nmodule.exports = list`
+)
 
 module.exports = {
   htmlWebpackPlugins
