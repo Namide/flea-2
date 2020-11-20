@@ -13,8 +13,9 @@ const requireList = []
 
 // Pages data
 const pageFiles = [
-    ...glob.sync('content/**/*.md'),
-    ...glob.sync('content/**/*.html')
+    ...glob.sync('content/pages/**/*.md'),
+    ...glob.sync('content/pages/**/*.ejs'),
+    ...glob.sync('content/pages/**/*.html')
   ]
   .filter(fileName => !/^content\/static\//si.test(fileName))
 
@@ -37,9 +38,11 @@ const htmlWebpackPlugins = pageFiles
     }
 
     if (ext === 'md') {
-      requireList.push(`list['${meta.filesrc}'] = require('html-loader!markdown-loader!metaless-loader!./content/${meta.filesrc}')`)
+      requireList.push(`list['${meta.filesrc}'] = () => require('./content/${meta.filesrc}')`)
     } else if (ext === 'html') {
-      requireList.push(`list['${meta.filesrc}'] = require('html-loader!metaless-loader!./content/${meta.filesrc}')`)
+      requireList.push(`list['${meta.filesrc}'] = () => require('./content/${meta.filesrc}')`)
+    } else if (ext === 'ejs') {
+      requireList.push(`list['${meta.filesrc}'] = (data) => require('./content/${meta.filesrc}')(data)`)
     }
 
     const page = JSON.parse(JSON.stringify(meta))
@@ -51,7 +54,7 @@ const htmlWebpackPlugins = pageFiles
   })
 
 console.log('Page count:', pageFiles.length, '\n')
-
+  
 fs.writeFileSync(
   './.flea-cache.pages.js',
   `const list = {}\n${ requireList.join('\n') }\nmodule.exports = list`

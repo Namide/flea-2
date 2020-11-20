@@ -80,6 +80,22 @@ module.exports = env => {
                 esModule: false
               }
             },
+            'metaless-loader'
+          ],
+        },
+        {
+          test: /\.md$/,
+          use: [
+            'html-loader',
+            'markdown-loader',
+            'metaless-loader',
+          ],
+        },
+        {
+          test: /\.html$/,
+          use: [
+            'html-loader',
+            'metaless-loader',
           ],
         }
       ]

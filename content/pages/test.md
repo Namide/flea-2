@@ -1,6 +1,6 @@
 ---
 name: test
-permalink: /fr/exemple
+permalink: /test
 template: post
 language: fr
 ---

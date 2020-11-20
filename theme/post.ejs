@@ -5,9 +5,9 @@
     <link href="<%= require('./style/post.css').default %>" rel="stylesheet" type="text/css">
   </head>
   <body>
-    <img src="<%= require('../content/touhou.jpg').default %>" alt="">
+    <img src="<%= require('../content/pages/touhou.jpg').default %>" alt="">
     
-    <%= require('../.flea-cache.pages.js')[htmlWebpackPlugin.options.filesrc] %>
+    <%= require('../.flea-cache.pages.js')[htmlWebpackPlugin.options.data.filesrc](htmlWebpackPlugin.options.data) %>
 
     <script type="text/javascript" src="/assets/script/main.js"></script>
   </body>
